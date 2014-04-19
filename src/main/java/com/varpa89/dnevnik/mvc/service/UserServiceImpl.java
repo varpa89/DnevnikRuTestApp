@@ -30,4 +30,10 @@ public class UserServiceImpl implements UserService {
     public void removeUser(Long id){
         userDAO.removeUser(id);
     }
+
+    @Transactional
+    public User getUser(Long id){return userDAO.getUser(id);}
+
+    @Transactional
+    public User updateUser(User user){return userDAO.updateUser(user);}
 }

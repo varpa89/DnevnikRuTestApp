@@ -16,19 +16,27 @@ public class UserDAOImpl implements UserDAO {
     @Autowired
     private SessionFactory sessionFactory;
 
-    public void addUser(User user){
+    public void addUser(User user) {
         sessionFactory.getCurrentSession().save(user);
     }
 
-    //@SuppressWarnings("unchecked")
-    public List<User> listUser(){
+    @SuppressWarnings("unchecked")
+    public List<User> listUser() {
         return sessionFactory.getCurrentSession().createQuery("from User").list();
     }
 
-    public void removeUser(Long id){
+    public void removeUser(Long id) {
         User user = (User) sessionFactory.getCurrentSession().load(User.class, id);
-        if(null != user){
+        if (null != user) {
             sessionFactory.getCurrentSession().delete(user);
         }
+    }
+
+    public User getUser(Long id) {
+        return (User) sessionFactory.getCurrentSession().get(User.class, id);
+    }
+
+    public User updateUser(User user) {
+        return (User)sessionFactory.getCurrentSession().merge(user);
     }
 }

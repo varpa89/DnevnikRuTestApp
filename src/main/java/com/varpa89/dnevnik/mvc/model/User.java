@@ -11,7 +11,8 @@ import javax.persistence.*;
 @Table(name = "ACCOUNT")
 public class User {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "account_id_seq")
+    @SequenceGenerator(name = "account_id_seq", sequenceName = "account_id_seq")
     private Long id;
 
     @Basic

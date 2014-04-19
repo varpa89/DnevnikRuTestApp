@@ -13,4 +13,8 @@ public interface UserDAO {
     public List<User> listUser();
 
     public void removeUser(Long id);
+
+    public User getUser(Long id);
+
+    public User updateUser(User user);
 }
