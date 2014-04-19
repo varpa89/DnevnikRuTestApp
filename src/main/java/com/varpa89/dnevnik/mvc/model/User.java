@@ -4,6 +4,7 @@ import org.codehaus.jackson.annotate.JsonIgnore;
 import org.codehaus.jackson.annotate.JsonProperty;
 
 import javax.persistence.*;
+import java.util.Date;
 
 /**
  * User: varpa89
@@ -38,6 +39,15 @@ public class User {
 
     @Basic
     private String comment;
+
+    @Basic
+    private Date birthDate;
+
+    @Enumerated(EnumType.ORDINAL)
+    private Gender gender;
+
+    @Basic
+    private Boolean deleted = false;
 
     public Long getId() {
         return id;
@@ -102,4 +112,30 @@ public class User {
 
     @JsonProperty
     public void setPassword2(String password2) {this.password2 = password2;}
+
+    public Date getBirthDate() {
+        return birthDate;
+    }
+
+    public void setBirthDate(Date birthDate) {
+        this.birthDate = birthDate;
+    }
+
+    public Gender getGender() {
+        return gender;
+    }
+
+    public void setGender(Gender gender) {
+        this.gender = gender;
+    }
+
+    @JsonIgnore
+    public Boolean getDeleted() {
+        return deleted;
+    }
+
+    @JsonIgnore
+    public void setDeleted(Boolean deleted) {
+        this.deleted = deleted;
+    }
 }

@@ -10,6 +10,11 @@
 <head>
     <title>BackBone</title>
     <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/2.3.2/css/bootstrap.min.css">
+    <style>
+        .controls input{
+            height: 30px;
+        }
+    </style>
 </head>
 <body>
 <div class="container">
@@ -45,8 +50,16 @@
 </script>
 
 <script type="text/template" id="edit-user-template">
-    <form class="edit-user-form">
+    <form class="edit-user-form form-horizontal">
         <legend><@= user ? 'Редактирование':'Создание' @> пользователя</legend>
+        <div class="control-group login">
+            <label for="loginId" class="control-label">Логин:</label>
+
+            <div class="controls">
+                <input type="text" id="loginId" name="login" value="<@= user ? user.get('login') : '' @>">
+                <span class="help-inline"></span>
+            </div>
+        </div>
         <div class="control-group lastName">
             <label for="lastNameId" class="control-label">Фамилия:</label>
 
@@ -55,10 +68,39 @@
                 <span class="help-inline"></span>
             </div>
         </div>
-        <label>Имя</label>
-        <input type="text" name="firstName" value="<@= user ? user.get('firstName') : '' @>">
-        <label>Отчество</label>
-        <input type="text" name="middleName" value="<@= user ? user.get('middleName') : '' @>">
+        <div class="control-group firstName">
+            <label for="firstNameId" class="control-label">Имя:</label>
+
+            <div class="controls">
+                <input type="text" id="firstNameId" name="firstName" value="<@= user ? user.get('firstName') : '' @>">
+                <span class="help-inline"></span>
+            </div>
+        </div>
+        <div class="control-group middleName">
+            <label for="middleNameId" class="control-label">Отчество:</label>
+
+            <div class="controls">
+                <input type="text" id="middleNameId" name="middleName"
+                       value="<@= user ? user.get('middleName') : '' @>">
+                <span class="help-inline"></span>
+            </div>
+        </div>
+        <div class="control-group password">
+            <label for="passwordId" class="control-label">Пароль:</label>
+
+            <div class="controls">
+                <input type="password" id="passwordId" name="password">
+                <span class="help-inline"></span>
+            </div>
+        </div>
+        <div class="control-group password2">
+            <label for="password2Id" class="control-label">Повтор пароля:</label>
+
+            <div class="controls">
+                <input type="password" id="password2Id" name="password2">
+                <span class="help-inline"></span>
+            </div>
+        </div>
         <hr/>
         <button type="submit" class="btn btn-success"><@= user ? 'Обновить' : 'Создать' @></button>
         <@ if(user){ @>
@@ -108,9 +150,28 @@
     var User = Backbone.Model.extend({
         urlRoot: '/api/v1/users',
         validate: function (attrs) {
+            console.log(attrs);
             var errors = [];
             if (!attrs.lastName) {
                 errors.push({name: 'lastName', message: 'Необходимо ввести фамилию'});
+            }
+            if (!attrs.firstName) {
+                errors.push({name: 'firstName', message: 'Необходимо ввести имя'});
+            }
+            if (!attrs.login) {
+                errors.push({name: 'login', message: 'Необходимо ввести логин'});
+            }
+            if (!attrs.id) {
+                if (!attrs.password) {
+                    errors.push({name: 'password', message: 'Необходимо ввести пароль'});
+                }
+                if (!attrs.password2) {
+                    errors.push({name: 'password2', message: 'Повторите пароль'});
+                }
+                if (attrs.password && attrs.password2 && attrs.password !== attrs.password2) {
+                    errors.push({name: 'password', message: 'Пароли не совпадают'});
+                    errors.push({name: 'password2', message: 'Пароли не совпадают'});
+                }
             }
             return errors.length > 0 ? errors : false;
         }
@@ -158,7 +219,8 @@
                         var template = _.template($('#edit-user-template').html(), {user: user});
                         that.$el.html(template);
                     },
-                    error: function () {
+                    error: function (error) {
+                        console.log(error);
                         console.log("Error while getting user info");
                     }
                 })
@@ -181,6 +243,7 @@
                     router.navigate('', {trigger: true})
                 },
                 error: function (model, errors) {
+                    that.hideErrors();
                     that.showErrors(errors);
                     console.log("Error while saving user");
                     console.log(errors);

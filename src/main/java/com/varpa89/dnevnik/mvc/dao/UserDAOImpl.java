@@ -22,13 +22,14 @@ public class UserDAOImpl implements UserDAO {
 
     @SuppressWarnings("unchecked")
     public List<User> listUser() {
-        return sessionFactory.getCurrentSession().createQuery("from User").list();
+        return sessionFactory.getCurrentSession().createQuery("from User where deleted=false").list();
     }
 
     public void removeUser(Long id) {
         User user = (User) sessionFactory.getCurrentSession().load(User.class, id);
         if (null != user) {
-            sessionFactory.getCurrentSession().delete(user);
+            user.setDeleted(true);
+            sessionFactory.getCurrentSession().merge(user);
         }
     }
 
