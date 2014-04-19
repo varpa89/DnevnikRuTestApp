@@ -29,9 +29,9 @@
         <tbody>
             <@ _.each(users, function(user){ @>
                <tr>
-                     <td></td>
-                     <td></td>
-                     <td></td>
+                     <td><@= user.get('lastName') @></td>
+                     <td><@= user.get('firstName') @></td>
+                     <td><@= user.get('middleName') @></td>
                      <td></td>
                </tr>
             <@}); @>
@@ -52,6 +52,7 @@
     };
     $.ajaxPrefilter(function (options, originalOptions, jqXHR) {
         jqXHR.setRequestHeader('Content-Type', 'application/json');
+        jqXHR.setRequestHeader('Accept', 'application/json');
     });
     var Users = Backbone.Collection.extend({
         url: '/api/v1/users'

@@ -7,7 +7,8 @@ import javax.persistence.*;
  * Date: 18.04.14
  * Time: 15:32
  */
-@Entity(name = "account")
+@Entity
+@Table(name = "ACCOUNT")
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)

@@ -2,9 +2,6 @@ package com.varpa89.dnevnik.mvc.controller;
 
 import com.varpa89.dnevnik.mvc.model.User;
 import com.varpa89.dnevnik.mvc.repository.UserRepository;
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
