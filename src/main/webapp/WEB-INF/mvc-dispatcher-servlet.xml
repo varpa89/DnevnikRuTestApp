@@ -17,9 +17,10 @@
         <property name="suffix" value=".jsp"/>
     </bean>
 
-    <jpa:repositories base-package="com.varpa89.dnevnik.mvc.repository"/>
-    <bean id="userService" class="com.varpa89.dnevnik.mvc.service.UserServiceImpl"/>
-    <bean id="userDAO" class="com.varpa89.dnevnik.mvc.dao.UserDAOImpl"/>
+
+    <context:component-scan base-package="com.varpa89.dnevnik.mvc.service"/>
+    <context:component-scan base-package="com.varpa89.dnevnik.mvc.dao"/>
+
     <bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
         <property name="driverClassName" value="org.postgresql.Driver" />
         <property name="username" value="admin"/>

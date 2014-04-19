@@ -1,14 +1,11 @@
 package com.varpa89.dnevnik.mvc.controller.api;
 
 import com.varpa89.dnevnik.mvc.model.User;
-import com.varpa89.dnevnik.mvc.repository.UserRepository;
 import com.varpa89.dnevnik.mvc.service.UserService;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
-import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
