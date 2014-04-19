@@ -47,8 +47,14 @@
 <script type="text/template" id="edit-user-template">
     <form class="edit-user-form">
         <legend><@= user ? 'Редактирование':'Создание' @> пользователя</legend>
-        <label>Фамилия</label>
-        <input type="text" name="lastName" value="<@= user ? user.get('lastName') : '' @>">
+        <div class="control-group lastName">
+            <label for="lastNameId" class="control-label">Фамилия:</label>
+
+            <div class="controls">
+                <input type="text" id="lastNameId" name="lastName" value="<@= user ? user.get('lastName') : '' @>">
+                <span class="help-inline"></span>
+            </div>
+        </div>
         <label>Имя</label>
         <input type="text" name="firstName" value="<@= user ? user.get('firstName') : '' @>">
         <label>Отчество</label>
@@ -100,7 +106,14 @@
         url: '/api/v1/users'
     });
     var User = Backbone.Model.extend({
-        urlRoot: '/api/v1/users'
+        urlRoot: '/api/v1/users',
+        validate: function (attrs) {
+            var errors = [];
+            if (!attrs.lastName) {
+                errors.push({name: 'lastName', message: 'Необходимо ввести фамилию'});
+            }
+            return errors.length > 0 ? errors : false;
+        }
     });
 
     //Views
@@ -119,14 +132,14 @@
                 }
             })
         },
-        deleteUser: function(options){
+        deleteUser: function (options) {
             if (options.id) {
-                var user = new User({id:options.id});
+                var user = new User({id: options.id});
                 user.destroy({
-                    success:function(){
+                    success: function () {
                         router.navigate('', {trigger: true})
                     },
-                    error: function(){
+                    error: function () {
                         console.log("Error while removing user");
                     }
                 });
@@ -159,14 +172,18 @@
             'click .delete': 'deleteUser'
         },
         saveUser: function (ev) {
+            var that = this;
             var userDetails = $(ev.currentTarget).serializeObject();
             var user = new User();
             user.save(userDetails, {
                 success: function (user) {
+                    that.hideErrors();
                     router.navigate('', {trigger: true})
                 },
-                error: function () {
+                error: function (model, errors) {
+                    that.showErrors(errors);
                     console.log("Error while saving user");
+                    console.log(errors);
                 }
             });
             return false;
@@ -176,11 +193,23 @@
                 success: function () {
                     router.navigate('', {trigger: true})
                 },
-                error: function(){
+                error: function () {
                     console.log("Error while removing user");
                 }
             });
             return false;
+        },
+        showErrors: function (errors) {
+            _.each(errors, function (error) {
+                console.log(error.message);
+                var controlGroup = this.$('.' + error.name);
+                controlGroup.addClass('error');
+                controlGroup.find('.help-inline').text(error.message);
+            }, this);
+        },
+        hideErrors: function () {
+            this.$('.control-group').removeClass('error');
+            this.$('.help-inline').text('');
         }
     });
     //Router
