@@ -35,7 +35,7 @@
             <td><@= user.get('firstName') @></td>
             <td><@= user.get('middleName') @></td>
             <td>
-                <a href="#/edit/<@= user.id @>" class="btn">Редактировать</a>
+                <a href="#/edit/<@= user.id @>" class="btn btn-info">Редактировать</a>
                 <a href="#/delete/<@= user.id @>" class="btn btn-danger">Удалить</a>
             </td>
         </tr>
@@ -54,11 +54,12 @@
         <label>Отчество</label>
         <input type="text" name="middleName" value="<@= user ? user.get('middleName') : '' @>">
         <hr/>
-        <button type="submit" class="btn"><@= user ? 'Обновить' : 'Создать' @></button>
+        <button type="submit" class="btn btn-success"><@= user ? 'Обновить' : 'Создать' @></button>
         <@ if(user){ @>
         <input type="hidden" name="id" value="<@= user.id @>"/>
         <button type="button" class="btn btn-danger delete">Удалить</button>
         <@ }; @>
+        <a href="#" class="btn btn-link">Назад</a>
     </form>
 </script>
 
