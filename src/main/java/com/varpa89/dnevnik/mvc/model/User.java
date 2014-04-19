@@ -1,5 +1,8 @@
 package com.varpa89.dnevnik.mvc.model;
 
+import org.codehaus.jackson.annotate.JsonIgnore;
+import org.codehaus.jackson.annotate.JsonProperty;
+
 import javax.persistence.*;
 
 /**
@@ -29,6 +32,9 @@ public class User {
 
     @Basic
     private String password;
+
+    @Transient
+    private String password2;
 
     @Basic
     private String comment;
@@ -73,10 +79,12 @@ public class User {
         this.login = login;
     }
 
+    @JsonIgnore
     public String getPassword() {
         return password;
     }
 
+    @JsonProperty
     public void setPassword(String password) {
         this.password = password;
     }
@@ -88,4 +96,10 @@ public class User {
     public void setComment(String comment) {
         this.comment = comment;
     }
+
+    @JsonIgnore
+    public String getPassword2() {return password2;}
+
+    @JsonProperty
+    public void setPassword2(String password2) {this.password2 = password2;}
 }
