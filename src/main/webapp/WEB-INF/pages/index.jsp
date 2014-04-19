@@ -85,6 +85,13 @@
                 <span class="help-inline"></span>
             </div>
         </div>
+        <div class="control-group comment">
+            <label for="commentId" class="control-label">Комментарий:</label>
+            <div class="controls">
+                <textarea rows="3" id="commentId" name="comment"><@= user ? user.get('comment') : '' @></textarea>
+                <span class="help-inline"></span>
+            </div>
+        </div>
         <div class="control-group password">
             <label for="passwordId" class="control-label">Пароль:</label>
 
