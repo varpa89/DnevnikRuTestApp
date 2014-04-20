@@ -1,7 +1,13 @@
 package com.varpa89.dnevnik.mvc.model;
 
+import com.varpa89.dnevnik.util.JsonDateDeserializer;
+import com.varpa89.dnevnik.util.JsonDateSerializer;
 import org.codehaus.jackson.annotate.JsonIgnore;
 import org.codehaus.jackson.annotate.JsonProperty;
+import org.codehaus.jackson.map.annotate.JsonDeserialize;
+import org.codehaus.jackson.map.annotate.JsonSerialize;
+import org.codehaus.jackson.map.deser.std.DateDeserializer;
+import org.codehaus.jackson.map.ser.std.DateSerializer;
 
 import javax.persistence.*;
 import java.util.Date;
@@ -43,7 +49,7 @@ public class User {
     @Basic
     private Date birthDate;
 
-    @Enumerated(EnumType.ORDINAL)
+    @Enumerated(EnumType.STRING)
     private Gender gender;
 
     @Basic
@@ -113,10 +119,12 @@ public class User {
     @JsonProperty
     public void setPassword2(String password2) {this.password2 = password2;}
 
+    @JsonSerialize(using = JsonDateSerializer.class, include=JsonSerialize.Inclusion.NON_NULL)
     public Date getBirthDate() {
         return birthDate;
     }
 
+    @JsonDeserialize(using = JsonDateDeserializer.class)
     public void setBirthDate(Date birthDate) {
         this.birthDate = birthDate;
     }

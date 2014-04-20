@@ -14,6 +14,9 @@
         .controls input{
             height: 30px;
         }
+        .controls select{
+            width: 206px;
+        }
     </style>
 </head>
 <body>
@@ -28,6 +31,7 @@
     <hr/>
     <table class="table stripped">
         <thead>
+        <th>Логин</th>
         <th>Фамилия</th>
         <th>Имя</th>
         <th>Отчество</th>
@@ -36,6 +40,7 @@
         <tbody>
         <@ _.each(users, function(user){ @>
         <tr>
+            <td><@= user.get('login') @></td>
             <td><@= user.get('lastName') @></td>
             <td><@= user.get('firstName') @></td>
             <td><@= user.get('middleName') @></td>
@@ -54,7 +59,6 @@
         <legend><@= user ? 'Редактирование':'Создание' @> пользователя</legend>
         <div class="control-group login">
             <label for="loginId" class="control-label">Логин:</label>
-
             <div class="controls">
                 <input type="text" id="loginId" name="login" value="<@= user ? user.get('login') : '' @>">
                 <span class="help-inline"></span>
@@ -62,7 +66,6 @@
         </div>
         <div class="control-group lastName">
             <label for="lastNameId" class="control-label">Фамилия:</label>
-
             <div class="controls">
                 <input type="text" id="lastNameId" name="lastName" value="<@= user ? user.get('lastName') : '' @>">
                 <span class="help-inline"></span>
@@ -70,7 +73,6 @@
         </div>
         <div class="control-group firstName">
             <label for="firstNameId" class="control-label">Имя:</label>
-
             <div class="controls">
                 <input type="text" id="firstNameId" name="firstName" value="<@= user ? user.get('firstName') : '' @>">
                 <span class="help-inline"></span>
@@ -78,10 +80,28 @@
         </div>
         <div class="control-group middleName">
             <label for="middleNameId" class="control-label">Отчество:</label>
-
             <div class="controls">
                 <input type="text" id="middleNameId" name="middleName"
                        value="<@= user ? user.get('middleName') : '' @>">
+                <span class="help-inline"></span>
+            </div>
+        </div>
+        <div class="control-group birthDate">
+            <label for="birthDateId" class="control-label">Дата рождения:</label>
+            <div class="controls">
+                <input type="text" id="birthDateId" name="birthDate"
+                       value="<@= (user && user.get('birthDate') !== undefined) ? user.get('birthDate') : '' @>">
+                <span class="help-inline"></span>
+            </div>
+        </div>
+        <div class="control-group gender">
+            <label for="genderId" class="control-label">Пол:</label>
+            <div class="controls">
+                <select name="gender"  id="genderId">
+                    <option value="NOT_SELECTED" <@ if(user && user.get('gender') == 'NOT_SELECTED') { @> SELECTED <@ }; @> ></option>
+                    <option value="MALE" <@ if(user && user.get('gender') == 'MALE') { @> SELECTED <@ }; @> >Мужской</option>
+                    <option value="FEMALE" <@ if(user && user.get('gender') == 'FEMALE') { @> SELECTED <@ }; @> >Женский</option>
+                </select>
                 <span class="help-inline"></span>
             </div>
         </div>
@@ -94,7 +114,6 @@
         </div>
         <div class="control-group password">
             <label for="passwordId" class="control-label">Пароль:</label>
-
             <div class="controls">
                 <input type="password" id="passwordId" name="password">
                 <span class="help-inline"></span>
@@ -102,7 +121,6 @@
         </div>
         <div class="control-group password2">
             <label for="password2Id" class="control-label">Повтор пароля:</label>
-
             <div class="controls">
                 <input type="password" id="password2Id" name="password2">
                 <span class="help-inline"></span>
@@ -111,8 +129,8 @@
         <hr/>
         <button type="submit" class="btn btn-success"><@= user ? 'Обновить' : 'Создать' @></button>
         <@ if(user){ @>
-        <input type="hidden" name="id" value="<@= user.id @>"/>
-        <button type="button" class="btn btn-danger delete">Удалить</button>
+            <input type="hidden" name="id" value="<@= user.id @>"/>
+            <button type="button" class="btn btn-danger delete">Удалить</button>
         <@ }; @>
         <a href="#" class="btn btn-link">Назад</a>
     </form>
@@ -121,6 +139,7 @@
 <script src="resources/js/lib/jquery-1.7.2.min.js"></script>
 <script src="resources/js/lib/underscore-min.js"></script>
 <script src="resources/js/lib/backbone-min.js"></script>
+<script src="resources/js/lib/jquery.maskedinput.min.js"></script>
 
 <%--<script src="resources/js/model/usermodel.js"></script>--%>
 <script>
@@ -157,7 +176,6 @@
     var User = Backbone.Model.extend({
         urlRoot: '/api/v1/users',
         validate: function (attrs) {
-            console.log(attrs);
             var errors = [];
             if (!attrs.lastName) {
                 errors.push({name: 'lastName', message: 'Необходимо ввести фамилию'});
@@ -175,11 +193,21 @@
                 if (!attrs.password2) {
                     errors.push({name: 'password2', message: 'Повторите пароль'});
                 }
-                if (attrs.password && attrs.password2 && attrs.password !== attrs.password2) {
+                if (attrs.password && attrs.password.length < 5) {
+                    errors.push({name: 'password', message: 'Пароль должен быть не менее 5 символов'});
+                }else if (attrs.password && attrs.password2 && attrs.password !== attrs.password2) {
+                    errors.push({name: 'password', message: 'Пароли не совпадают'});
+                    errors.push({name: 'password2', message: 'Пароли не совпадают'});
+                }
+            } else {
+                if (attrs.password && attrs.password.length < 5) {
+                    errors.push({name: 'password', message: 'Пароль должен быть не менее 5 символов'});
+                }else if (attrs.password && attrs.password2 && attrs.password !== attrs.password2) {
                     errors.push({name: 'password', message: 'Пароли не совпадают'});
                     errors.push({name: 'password2', message: 'Пароли не совпадают'});
                 }
             }
+
             return errors.length > 0 ? errors : false;
         }
     });
@@ -225,15 +253,16 @@
                     success: function (user) {
                         var template = _.template($('#edit-user-template').html(), {user: user});
                         that.$el.html(template);
+                        $("#birthDateId").mask("99.99.9999");
                     },
                     error: function (error) {
-                        console.log(error);
                         console.log("Error while getting user info");
                     }
                 })
             } else {
                 var template = _.template($('#edit-user-template').html(), {user: null});
                 this.$el.html(template);
+                $("#birthDateId").mask("99.99.9999");
             }
         },
         events: {

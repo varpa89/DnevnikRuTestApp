@@ -6,6 +6,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -34,7 +36,7 @@ public class UserController {
     @ResponseStatus(HttpStatus.CREATED)
     public
     @ResponseBody
-    User createUser(@RequestBody User user){
+    User createUser(@Validated @RequestBody User user, BindingResult result){
         userService.addUser(user);
         return user;
     }
