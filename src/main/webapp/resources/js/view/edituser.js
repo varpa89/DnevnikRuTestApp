@@ -11,7 +11,7 @@ window.EditUser = Backbone.View.extend({
                     $("#birthDateId").mask("99.99.9999");
                 },
                 error: function (error) {
-                    console.log("Error while getting user info");
+                    alert.render('alert-error', 'При сохранении данных произошла ошибка');
                 }
             })
         } else {
@@ -28,9 +28,16 @@ window.EditUser = Backbone.View.extend({
         var that = this;
         var userDetails = $(ev.currentTarget).serializeObject();
         var user = new User();
+        var successMessage =  '';
+        if(userDetails.id){
+            successMessage="Данные пользователя обновлены успешно";
+        } else{
+            successMessage="Новый пользователь добавлен успешно";
+        }
         user.save(userDetails, {
             success: function (user, response) {
                 that.hideErrors();
+                alert.render('alert-success', successMessage);
                 router.navigate('', {trigger: true})
             },
             error: function (model, errors) {
@@ -46,10 +53,11 @@ window.EditUser = Backbone.View.extend({
     deleteUser: function (ev) {
         this.user.destroy({
             success: function () {
+                alert.render('alert-success', 'Пользователь успешно удален');
                 router.navigate('', {trigger: true})
             },
             error: function () {
-                console.log("Error while removing user");
+                alert.render('alert-error', 'При удалении пользователя произошла ошибка');
             }
         });
         return false;

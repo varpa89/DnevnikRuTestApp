@@ -19,5 +19,6 @@ router.on('route:deleteUser', function (id) {
 
 var userList = new UserList();
 var editUser = new EditUser();
+var alert = new CustomAlert();
 
 Backbone.history.start();

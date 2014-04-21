@@ -9,7 +9,7 @@ window.UserList = Backbone.View.extend({
                 that.$el.html(template);
             },
             error: function () {
-                console.log("Error while getting users");
+                alert.render('alert-error', 'При получении списка пользователей произошла ошибка');
             }
         })
     },
@@ -18,10 +18,11 @@ window.UserList = Backbone.View.extend({
             var user = new User({id: options.id});
             user.destroy({
                 success: function () {
+                    alert.render('alert-success', 'Пользователь успешно удален');
                     router.navigate('', {trigger: true})
                 },
                 error: function () {
-                    console.log("Error while removing user");
+                    alert.render('alert-error', 'При удалении пользователя произошла ошибка');
                 }
             });
         }
