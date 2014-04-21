@@ -1,10 +1,5 @@
 package com.varpa89.dnevnik.util;
 
-/**
- * User: varpa89
- * Date: 21.04.14
- * Time: 10:44
- */
 import org.codehaus.jackson.annotate.JsonIgnoreProperties;
 
 import java.util.List;

@@ -1,10 +1,5 @@
 package com.varpa89.dnevnik.mvc.controller.api;
 
-/**
- * User: varpa89
- * Date: 21.04.14
- * Time: 10:43
- */
 import java.util.ArrayList;
 import java.util.List;
 
@@ -23,7 +18,7 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExcep
 
 
 @ControllerAdvice
-public class MyExceptionHandler extends ResponseEntityExceptionHandler {
+public class JsonValidationExceptionHandler extends ResponseEntityExceptionHandler {
 
     @ExceptionHandler({ InvalidRequestException.class })
     protected ResponseEntity<Object> handleInvalidRequest(RuntimeException e, WebRequest request) {

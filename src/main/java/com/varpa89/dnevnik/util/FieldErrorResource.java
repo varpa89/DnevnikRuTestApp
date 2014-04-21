@@ -2,11 +2,6 @@ package com.varpa89.dnevnik.util;
 
 import org.codehaus.jackson.annotate.JsonIgnoreProperties;
 
-/**
- * User: varpa89
- * Date: 21.04.14
- * Time: 10:47
- */
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class FieldErrorResource {
     private String resource;

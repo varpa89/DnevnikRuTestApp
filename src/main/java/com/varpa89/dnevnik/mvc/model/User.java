@@ -12,11 +12,6 @@ import org.codehaus.jackson.map.ser.std.DateSerializer;
 import javax.persistence.*;
 import java.util.Date;
 
-/**
- * User: varpa89
- * Date: 18.04.14
- * Time: 15:32
- */
 @Entity
 @Table(name = "ACCOUNT")
 public class User {

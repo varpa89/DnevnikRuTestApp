@@ -14,11 +14,6 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-/**
- * User: varpa89
- * Date: 18.04.14
- * Time: 16:28
- */
 @Controller
 @RequestMapping("/api/v1")
 public class UserController {

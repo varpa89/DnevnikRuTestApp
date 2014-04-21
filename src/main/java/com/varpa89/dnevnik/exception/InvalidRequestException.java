@@ -1,10 +1,5 @@
 package com.varpa89.dnevnik.exception;
 
-/**
- * User: varpa89
- * Date: 21.04.14
- * Time: 10:42
- */
 import org.springframework.validation.Errors;
 
 @SuppressWarnings("serial")
