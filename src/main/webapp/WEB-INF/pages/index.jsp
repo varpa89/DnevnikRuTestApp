@@ -1,7 +1,7 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
-    <title>BackBone</title>
+    <title>Редактор пользователей. Тестовое задание для dnevnik.ru (выполнил Варченко П.С.)</title>
     <link rel="stylesheet" href="resources/css/bootstrap.min.css">
     <style>
         .controls input {
@@ -15,7 +15,8 @@
 </head>
 <body>
 <div class="container">
-    <%--<h3>Тестовое задание для dnevnik.ru - редактор пользователей</h3>--%>
+    <h3>Редактор пользователей</h3>
+    <h5>Тестовое задание для <a href="http://dnevnik.ru/" class="btn-link">dnevnik.ru</a></h5>
     <hr/>
     <div class="custom-alert"></div>
     <div class="page"></div>
