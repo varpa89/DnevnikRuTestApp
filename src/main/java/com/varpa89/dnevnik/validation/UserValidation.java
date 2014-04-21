@@ -10,6 +10,15 @@ public class UserValidation {
             if(userService.isExistsByLogin(user.getLogin(), user.getId())){
                 errors.rejectValue("login", "error.login.notUnique","error.login.notUnique");
             }
+            if(user.getLogin().trim().isEmpty()){
+                errors.rejectValue("login", "error.login.isEmpty","Введите логин");
+            }
+            if(user.getLastName().trim().isEmpty()){
+                errors.rejectValue("lastName", "error.lastName.isEmpty","Введите фамилию");
+            }
+            if(user.getFirstName().trim().isEmpty()){
+                errors.rejectValue("firstName", "error.firstName.isEmpty","Введите имя");
+            }
         }
     }
 }
