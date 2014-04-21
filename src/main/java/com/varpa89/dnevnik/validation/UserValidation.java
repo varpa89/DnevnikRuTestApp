@@ -8,7 +8,7 @@ public class UserValidation {
     public void validateUser(User user, BindingResult errors, UserService userService) {
         if (user != null) {
             if (userService.isExistsByLogin(user.getLogin(), user.getId())) {
-                errors.rejectValue("login", "error.login.notUnique", "error.login.notUnique");
+                errors.rejectValue("login", "error.login.notUnique", "Введенный логин уже существует");
             }
             if (user.getLogin().trim().isEmpty()) {
                 errors.rejectValue("login", "error.login.isEmpty", "Необходимо ввести логин");
