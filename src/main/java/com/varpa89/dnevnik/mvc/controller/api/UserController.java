@@ -3,6 +3,7 @@ package com.varpa89.dnevnik.mvc.controller.api;
 import com.varpa89.dnevnik.exception.InvalidRequestException;
 import com.varpa89.dnevnik.mvc.model.User;
 import com.varpa89.dnevnik.mvc.service.UserService;
+import com.varpa89.dnevnik.util.SecurityBean;
 import com.varpa89.dnevnik.validation.UserValidation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -21,6 +22,9 @@ public class UserController {
     @Autowired
     private UserService userService;
 
+    @Autowired
+    private SecurityBean securityBean;
+
     UserValidation validator = new UserValidation();
 
     @RequestMapping(value = "/users", method = RequestMethod.GET, headers = {"Content-Type=application/json"})
@@ -35,24 +39,34 @@ public class UserController {
     @ResponseStatus(HttpStatus.CREATED)
     public
     @ResponseBody
-    void createUser(@RequestBody User user, BindingResult result){
+    User createUser(@RequestBody User user, BindingResult result){
         validator.validateUser(user, result, userService);
         if(result.hasErrors()){
             throw new InvalidRequestException("Invalid user", result);
         }
+        user.setPassword(securityBean.getStringMD5fromString(user.getPassword()));
         userService.addUser(user);
+        return user;
     }
 
     @RequestMapping(value="/users/{id}", method=RequestMethod.PUT, headers = {"Content-Type=application/json"})
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public
     @ResponseBody
-    void updateUser(@PathVariable("id") Long userId, @RequestBody User user, BindingResult result){
+    User updateUser(@PathVariable("id") Long userId, @RequestBody User user, BindingResult result){
         validator.validateUser(user, result, userService);
         if(result.hasErrors()){
             throw new InvalidRequestException("Invalid user", result);
         }
+        if(!validator.passwordIsEmpty(user.getPassword())){
+            user.setPassword(securityBean.getStringMD5fromString(user.getPassword()));
+        } else {
+            //TODO: it is bad practice
+            User existedUser = userService.getUser(userId);
+            user.setPassword(existedUser.getPassword());
+        }
         userService.updateUser(user);
+        return user;
     }
 
     @RequestMapping(value="/users/{id}", method=RequestMethod.DELETE, headers = {"Content-Type=application/json"})
