@@ -17,4 +17,8 @@ public interface UserDAO {
     public User getUser(Long id);
 
     public User updateUser(User user);
+
+    public Boolean isExistsByLogin(String login);
+
+    public Boolean isExistsByLoginAndId(String login, Long userId);
 }

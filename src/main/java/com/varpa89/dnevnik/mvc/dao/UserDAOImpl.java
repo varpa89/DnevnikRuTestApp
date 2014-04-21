@@ -1,6 +1,7 @@
 package com.varpa89.dnevnik.mvc.dao;
 
 import com.varpa89.dnevnik.mvc.model.User;
+import org.hibernate.Query;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
@@ -22,7 +23,7 @@ public class UserDAOImpl implements UserDAO {
 
     @SuppressWarnings("unchecked")
     public List<User> listUser() {
-        return sessionFactory.getCurrentSession().createQuery("from User where deleted=false").list();
+        return sessionFactory.getCurrentSession().createQuery("from User u where u.deleted=false").list();
     }
 
     public void removeUser(Long id) {
@@ -38,6 +39,21 @@ public class UserDAOImpl implements UserDAO {
     }
 
     public User updateUser(User user) {
-        return (User)sessionFactory.getCurrentSession().merge(user);
+        return (User) sessionFactory.getCurrentSession().merge(user);
+    }
+
+    public Boolean isExistsByLogin(String login) {
+        Query query = sessionFactory.getCurrentSession()
+                .createQuery("select 1 from User u where u.login = :login and u.deleted = false");
+        query.setString("login", login);
+        return (query.uniqueResult() != null);
+    }
+
+    public Boolean isExistsByLoginAndId(String login, Long userId) {
+        Query query = sessionFactory.getCurrentSession()
+                .createQuery("select 1 from User u where u.login = :login and u.deleted = false and u.id <> :id");
+        query.setString("login", login);
+        query.setLong("id", userId);
+        return (query.uniqueResult() != null);
     }
 }

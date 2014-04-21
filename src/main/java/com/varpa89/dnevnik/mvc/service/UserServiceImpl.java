@@ -17,23 +17,36 @@ public class UserServiceImpl implements UserService {
     private UserDAO userDAO;
 
     @Transactional
-    public void addUser(User user){
+    public void addUser(User user) {
         userDAO.addUser(user);
     }
 
     @Transactional
-    public List<User> listUser(){
+    public List<User> listUser() {
         return userDAO.listUser();
     }
 
     @Transactional
-    public void removeUser(Long id){
+    public void removeUser(Long id) {
         userDAO.removeUser(id);
     }
 
     @Transactional
-    public User getUser(Long id){return userDAO.getUser(id);}
+    public User getUser(Long id) {
+        return userDAO.getUser(id);
+    }
 
     @Transactional
-    public User updateUser(User user){return userDAO.updateUser(user);}
+    public User updateUser(User user) {
+        return userDAO.updateUser(user);
+    }
+
+    @Transactional
+    public Boolean isExistsByLogin(String login, Long userId) {
+        if (userId == null) {
+            return userDAO.isExistsByLogin(login);
+        } else {
+            return userDAO.isExistsByLoginAndId(login, userId);
+        }
+    }
 }

@@ -36,7 +36,7 @@ public class UserController {
     public
     @ResponseBody
     User createUser(@RequestBody User user, BindingResult result){
-        validator.validateUserOnCreate(user, result);
+        validator.validateUser(user, result, userService);
         if(result.hasErrors()){
             throw new InvalidRequestException("Invalid user", result);
         }
@@ -48,7 +48,11 @@ public class UserController {
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public
     @ResponseBody
-    User updateUser(@PathVariable("id") Long userId, @RequestBody User user){
+    User updateUser(@PathVariable("id") Long userId, @RequestBody User user, BindingResult result){
+        validator.validateUser(user, result, userService);
+        if(result.hasErrors()){
+            throw new InvalidRequestException("Invalid user", result);
+        }
         userService.updateUser(user);
         return user;
     }

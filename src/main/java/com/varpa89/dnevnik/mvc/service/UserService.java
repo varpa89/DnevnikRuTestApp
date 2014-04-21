@@ -17,4 +17,6 @@ public interface UserService {
     public User getUser(Long id);
 
     public User updateUser(User user);
+
+    public Boolean isExistsByLogin(String login, Long userId);
 }
