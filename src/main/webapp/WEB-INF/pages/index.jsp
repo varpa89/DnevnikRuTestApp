@@ -136,7 +136,7 @@
     </form>
 </script>
 
-<script src="resources/js/lib/jquery-1.7.2.min.js"></script>
+<script src="resources/js/lib/jquery-1.11.0.min.js"></script>
 <script src="resources/js/lib/underscore-min.js"></script>
 <script src="resources/js/lib/backbone-min.js"></script>
 <script src="resources/js/lib/jquery.maskedinput.min.js"></script>
@@ -274,15 +274,16 @@
             var userDetails = $(ev.currentTarget).serializeObject();
             var user = new User();
             user.save(userDetails, {
-                success: function (user) {
+                success: function (user, response) {
                     that.hideErrors();
                     router.navigate('', {trigger: true})
                 },
                 error: function (model, errors) {
+                    if(errors.responseJSON){
+                        errors = errors.responseJSON;
+                    }
                     that.hideErrors();
                     that.showErrors(errors);
-                    console.log("Error while saving user");
-                    console.log(errors);
                 }
             });
             return false;
@@ -298,11 +299,10 @@
             });
             return false;
         },
-        showErrors: function (errors, response) {
+        showErrors: function (errors) {
             //console.log(errors);
-            console.log(response);
             _.each(errors, function (error) {
-                console.log(error);
+                //console.log(error);
                 var controlGroup = this.$('.' + error.name);
                 controlGroup.addClass('error');
                 controlGroup.find('.help-inline').text(error.message);
