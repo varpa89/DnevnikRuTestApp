@@ -21,7 +21,7 @@
 </head>
 <body>
 <div class="container">
-    <h3>Тестовое задание для dnevnik.ru - редактор пользователей</h3>
+    <%--<h3>Тестовое задание для dnevnik.ru - редактор пользователей</h3>--%>
     <hr/>
     <div class="page"></div>
 </div>
@@ -298,9 +298,11 @@
             });
             return false;
         },
-        showErrors: function (errors) {
+        showErrors: function (errors, response) {
+            //console.log(errors);
+            console.log(response);
             _.each(errors, function (error) {
-                console.log(error.message);
+                console.log(error);
                 var controlGroup = this.$('.' + error.name);
                 controlGroup.addClass('error');
                 controlGroup.find('.help-inline').text(error.message);

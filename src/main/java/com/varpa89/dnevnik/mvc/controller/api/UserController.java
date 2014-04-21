@@ -1,7 +1,9 @@
 package com.varpa89.dnevnik.mvc.controller.api;
 
+import com.varpa89.dnevnik.exception.InvalidRequestException;
 import com.varpa89.dnevnik.mvc.model.User;
 import com.varpa89.dnevnik.mvc.service.UserService;
+import com.varpa89.dnevnik.validation.UserValidation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
@@ -24,6 +26,8 @@ public class UserController {
     @Autowired
     private UserService userService;
 
+    UserValidation validator = new UserValidation();
+
     @RequestMapping(value = "/users", method = RequestMethod.GET, headers = {"Content-Type=application/json"})
     public
     @ResponseBody
@@ -36,7 +40,11 @@ public class UserController {
     @ResponseStatus(HttpStatus.CREATED)
     public
     @ResponseBody
-    User createUser(@Validated @RequestBody User user, BindingResult result){
+    User createUser(@RequestBody User user, BindingResult result){
+        validator.validateUserOnCreate(user, result);
+        if(result.hasErrors()){
+            throw new InvalidRequestException("Invalid user", result);
+        }
         userService.addUser(user);
         return user;
     }
