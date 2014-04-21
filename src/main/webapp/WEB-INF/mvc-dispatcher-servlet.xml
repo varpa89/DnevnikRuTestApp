@@ -12,6 +12,8 @@
     <mvc:resources mapping="/resources/**" location="/resources/"/>
     <tx:annotation-driven transaction-manager="transactionManager"/>
 
+    <context:property-placeholder location="classpath:database.properties"/>
+
 
     <bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
         <property name="prefix" value="/WEB-INF/pages/"/>
@@ -20,9 +22,9 @@
 
     <bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
         <property name="driverClassName" value="org.postgresql.Driver"/>
-        <property name="username" value="admin"/>
-        <property name="password" value="admin"/>
-        <property name="url" value="jdbc:postgresql://localhost:5432/dnevnik"/>
+        <property name="username" value="${dataSource.userName}"/>
+        <property name="password" value="${dataSource.password}"/>
+        <property name="url" value="${dataSource.url}"/>
     </bean>
     <bean id="sessionFactory"
           class="org.springframework.orm.hibernate3.annotation.AnnotationSessionFactoryBean">
