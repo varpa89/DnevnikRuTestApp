@@ -62,7 +62,7 @@ public class UserController {
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public
     @ResponseBody
-    void updateUser(@PathVariable("id") Long userId){
+    void removeUser(@PathVariable("id") Long userId){
         userService.removeUser(userId);
     }
 
