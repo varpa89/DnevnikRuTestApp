@@ -22,6 +22,7 @@ public class JsonDateDeserializer extends JsonDeserializer<Date> {
     public Date deserialize(JsonParser jsonparser,
                             DeserializationContext deserializationcontext) throws IOException, JsonProcessingException {
         String date = jsonparser.getText();
+        if("".equals(date)) return null;
         try {
             return dateFormat.parse(date);
         } catch (ParseException e) {

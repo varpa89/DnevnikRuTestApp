@@ -10,6 +10,7 @@
     <context:component-scan base-package="com.varpa89.dnevnik"/>
     <mvc:annotation-driven/>
     <mvc:resources mapping="/resources/**" location="/resources/"/>
+    <tx:annotation-driven transaction-manager="transactionManager"/>
 
 
     <bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
@@ -17,12 +18,8 @@
         <property name="suffix" value=".jsp"/>
     </bean>
 
-
-    <context:component-scan base-package="com.varpa89.dnevnik.mvc.service"/>
-    <context:component-scan base-package="com.varpa89.dnevnik.mvc.dao"/>
-
     <bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
-        <property name="driverClassName" value="org.postgresql.Driver" />
+        <property name="driverClassName" value="org.postgresql.Driver"/>
         <property name="username" value="admin"/>
         <property name="password" value="admin"/>
         <property name="url" value="jdbc:postgresql://localhost:5432/dnevnik"/>
@@ -55,8 +52,4 @@
             </list>
         </property>
     </bean>
-
-    <tx:annotation-driven transaction-manager="transactionManager"/>
-
-
 </beans>

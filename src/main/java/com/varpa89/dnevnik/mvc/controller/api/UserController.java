@@ -35,26 +35,24 @@ public class UserController {
     @ResponseStatus(HttpStatus.CREATED)
     public
     @ResponseBody
-    User createUser(@RequestBody User user, BindingResult result){
+    void createUser(@RequestBody User user, BindingResult result){
         validator.validateUser(user, result, userService);
         if(result.hasErrors()){
             throw new InvalidRequestException("Invalid user", result);
         }
         userService.addUser(user);
-        return user;
     }
 
     @RequestMapping(value="/users/{id}", method=RequestMethod.PUT, headers = {"Content-Type=application/json"})
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public
     @ResponseBody
-    User updateUser(@PathVariable("id") Long userId, @RequestBody User user, BindingResult result){
+    void updateUser(@PathVariable("id") Long userId, @RequestBody User user, BindingResult result){
         validator.validateUser(user, result, userService);
         if(result.hasErrors()){
             throw new InvalidRequestException("Invalid user", result);
         }
         userService.updateUser(user);
-        return user;
     }
 
     @RequestMapping(value="/users/{id}", method=RequestMethod.DELETE, headers = {"Content-Type=application/json"})
