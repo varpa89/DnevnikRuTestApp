@@ -10,7 +10,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
-import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -58,7 +57,7 @@ public class UserController {
         if(result.hasErrors()){
             throw new InvalidRequestException("Invalid user", result);
         }
-        if(!validator.passwordIsEmpty(user.getPassword())){
+        if(!validator.isEmpty(user.getPassword())){
             user.setPassword(securityBean.getStringMD5fromString(user.getPassword()));
         } else {
             //TODO: it is bad practice

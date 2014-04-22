@@ -21,19 +21,15 @@ window.User = Backbone.Model.extend({
             if (!attrs.password2) {
                 errors.push({name: 'password2', message: 'Повторите пароль'});
             }
-            if (attrs.password && attrs.password.length < 5) {
-                errors.push({name: 'password', message: 'Пароль должен быть не менее 5 символов'});
-            }else if (attrs.password && attrs.password2 && attrs.password !== attrs.password2) {
-                errors.push({name: 'password', message: 'Пароли не совпадают'});
-                errors.push({name: 'password2', message: 'Пароли не совпадают'});
-            }
-        } else {
-            if (attrs.password && attrs.password.length < 5) {
-                errors.push({name: 'password', message: 'Пароль должен быть не менее 5 символов'});
-            }else if (attrs.password && attrs.password2 && attrs.password !== attrs.password2) {
-                errors.push({name: 'password', message: 'Пароли не совпадают'});
-                errors.push({name: 'password2', message: 'Пароли не совпадают'});
-            }
+        }
+        if (attrs.password && attrs.password.length < 5) {
+            errors.push({name: 'password', message: 'Пароль должен быть не менее 5 символов'});
+        }else if (attrs.password && attrs.password2 && attrs.password !== attrs.password2) {
+            errors.push({name: 'password', message: 'Пароли не совпадают'});
+            errors.push({name: 'password2', message: 'Пароли не совпадают'});
+        } else if(attrs.password !== attrs.password2){
+            errors.push({name: 'password', message: 'Пароли не совпадают'});
+            errors.push({name: 'password2', message: 'Пароли не совпадают'});
         }
 
         return errors.length > 0 ? errors : false;
