@@ -70,6 +70,7 @@ API
 
 
     {
+        "id":"1000"
         "login": "testuser",
         "lastName": "Варченко",
         "firstName": "Павел",
